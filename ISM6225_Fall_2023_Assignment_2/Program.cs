@@ -7,6 +7,7 @@ WRITE YOUR CODE IN THE RESPECTIVE QUESTION FUNCTION BLOCK
 */
 
 using System.Text;
+using System.Diagnostics;
 
 namespace ISM6225_Fall_2023_Assignment_2
 {
@@ -42,7 +43,7 @@ namespace ISM6225_Fall_2023_Assignment_2
 
             //Question 4:
             Console.WriteLine("Question 4");
-            string s1 = "69";
+            string s1 = "68";
             bool IsStrobogrammaticNumber = IsStrobogrammatic(s1);
             Console.WriteLine(IsStrobogrammaticNumber);
             Console.WriteLine();
@@ -112,8 +113,55 @@ namespace ISM6225_Fall_2023_Assignment_2
         {
             try
             {
-                // Write your code here and you can modify the return value according to the requirements
-                return new List<IList<int>>();
+                //Checking for errors and contraints
+                if (lower < -109 || upper > 109) { throw new ArgumentOutOfRangeException("lower or upper is out of range per contraints"); }
+                if (nums.Length <0 || nums.Length > 100) { throw new ArgumentOutOfRangeException("Length of list is not in range per constraints"); }
+                for (int i= 0; i< nums.Length-1; i++)
+                {
+                    if (nums[i] > nums[i + 1]) { throw new Exception("List input is not in order"); }
+                }
+
+               
+                //Problem solving
+                IList<IList<int>> missingRanges = new List<IList<int>>();
+                int min = new int();
+                int max = new int();
+
+                //Start at lower bound
+                min = lower;
+
+                foreach (int n in nums)
+                {
+                    IList<int> inner = new List<int>();
+                    if (min != n)
+                    {
+                        int counter = min;
+                        while (counter < n)
+                        {
+                            max = counter;
+                            counter++;
+                        }
+
+                        inner.Add(min);
+                        inner.Add(max);
+                        missingRanges.Add(inner);
+                    }
+                    
+                    min = n+1;   
+                }
+            // Add upper bound if necessary
+            if (max < upper)
+                {
+                    min = max + 2; //+2 to skip the last included value
+                    max = upper;
+                    IList<int> inner = new List<int>();
+                    inner.Add(min);
+                    inner.Add(max);
+                    missingRanges.Add(inner);
+                }
+                
+
+                return missingRanges;
             }
             catch (Exception)
             {
@@ -156,7 +204,12 @@ namespace ISM6225_Fall_2023_Assignment_2
         {
             try
             {
-                // Write your code here and you can modify the return value according to the requirements
+                s = s.Replace("()", "");
+                s = s.Replace("[]", "");
+                s = s.Replace("{}", "");
+
+                Debug.WriteLine(s);
+
                 return s.Length == 0;
             }
             catch (Exception)
@@ -191,8 +244,18 @@ namespace ISM6225_Fall_2023_Assignment_2
         {
             try
             {
-                // Write your code here and you can modify the return value according to the requirements
-                return 1;
+                int profit;
+                int max_profit = 0;
+
+                foreach (int price in prices)
+                {
+                    foreach(int sell in prices)
+                    {
+                        profit = sell - price;
+                        max_profit = Math.Max(max_profit, profit);
+                    }
+                }
+                return max_profit;
             }
             catch (Exception)
             {
@@ -229,8 +292,25 @@ namespace ISM6225_Fall_2023_Assignment_2
         {
             try
             {
+                char[] stros = { '0', '1', '6', '8', '9' };
+                char[] nums = s.ToCharArray();
+                Boolean result = true;
+
+               foreach (char num in nums)
+                {
+                    if (stros.Contains(num))
+                    {
+
+                        Debug.WriteLine(num);
+                        result = true;
+                        Debug.WriteLine(result);
+                    }
+                    else { result = false;  }
+                }
+
+
                 // Write your code here and you can modify the return value according to the requirements
-                return false;
+                return result;
             }
             catch (Exception)
             {
@@ -271,8 +351,17 @@ namespace ISM6225_Fall_2023_Assignment_2
         {
             try
             {
+                int pairs = 0;
+                for (int i = 0; i<nums.Length; i++)
+                {
+                    for (int j = i+1; j < nums.Length; j++)
+                    {
+                        if (nums[i] == nums[j]) { pairs++; }
+                    }
+                }
+
                 // Write your code here and you can modify the return value according to the requirements
-                return 0;
+                return pairs;
             }
             catch (Exception)
             {
@@ -321,8 +410,18 @@ namespace ISM6225_Fall_2023_Assignment_2
         {
             try
             {
-                // Write your code here and you can modify the return value according to the requirements
-                return 0;
+
+                Array.Sort(nums);
+                Array.Reverse(nums);
+                nums = nums.Distinct().ToArray();
+
+                int result = new int();
+
+                foreach(int num in nums) { Debug.WriteLine(num); }
+
+                if (nums.Length >= 3) {result = nums[2];}
+                else { result = nums[0]; }
+                return result;
             }
             catch (Exception)
             {
@@ -354,8 +453,24 @@ namespace ISM6225_Fall_2023_Assignment_2
         {
             try
             {
-                // Write your code here and you can modify the return value according to the requirements
-                return new List<string>() { };
+                List<string> moves = new List<string>() { };
+                string move = "";
+                Debug.WriteLine(currentState.Substring(0, 2));
+
+                for (int i = 0; i < currentState.Length - 1; i++)
+                {
+
+                    if (currentState.Substring(i, 2) == "++")
+                    {
+                        move = currentState.Remove(i, 2).Insert(i, "--");
+                    }
+                    else if ((currentState.Substring(i, 2) == "--"))
+                    {
+                        move = currentState.Remove(i, 2).Insert(i, "++");
+                    }
+                    moves.Add(move);
+                }
+                return moves;
             }
             catch (Exception)
             {
@@ -383,8 +498,13 @@ namespace ISM6225_Fall_2023_Assignment_2
 
         public static string RemoveVowels(string s)
         {
-            // Write your code here and you can modify the return value according to the requirements
-            return "";
+            string[] vowels = { "a", "e", "i", "o", "u" };
+            foreach (string vowel in vowels)
+            {
+                s = s.Replace(vowel, "");
+            }
+
+            return s;
         }
 
         /* Inbuilt Functions - Don't Change the below functions */
