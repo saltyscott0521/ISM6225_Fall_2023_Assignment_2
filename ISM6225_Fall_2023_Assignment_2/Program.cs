@@ -7,7 +7,6 @@ WRITE YOUR CODE IN THE RESPECTIVE QUESTION FUNCTION BLOCK
 */
 
 using System.Text;
-using System.Diagnostics;
 
 namespace ISM6225_Fall_2023_Assignment_2
 {
@@ -117,9 +116,7 @@ namespace ISM6225_Fall_2023_Assignment_2
                 if (lower < -109 || upper > 109) { throw new ArgumentOutOfRangeException("lower or upper is out of range per contraints"); }
                 if (nums.Length <0 || nums.Length > 100) { throw new ArgumentOutOfRangeException("Length of list is not in range per constraints"); }
                 for (int i= 0; i< nums.Length-1; i++)
-                {
-                    if (nums[i] > nums[i + 1]) { throw new Exception("List input is not in order"); }
-                }
+                {if (nums[i] > nums[i + 1]) { throw new Exception("List input is not in order"); }}
 
                
                 //Problem solving
@@ -204,11 +201,18 @@ namespace ISM6225_Fall_2023_Assignment_2
         {
             try
             {
+                //Checking for errors and contraints
+                if (s.Length < 1 || s.Length > 104) { throw new ArgumentOutOfRangeException("Length of list is not in range per constraints"); }
+                char[] check = { '(', ')', '[', ']', '{', '}' };
+                for (int i = 0; i < s.Length; i++)
+                { if (check.Contains(s[i])) { }
+                    else { throw new Exception("Input contains non-parenthesis character"); } 
+                }
+
+                //Solution
                 s = s.Replace("()", "");
                 s = s.Replace("[]", "");
                 s = s.Replace("{}", "");
-
-                Debug.WriteLine(s);
 
                 return s.Length == 0;
             }
@@ -244,6 +248,12 @@ namespace ISM6225_Fall_2023_Assignment_2
         {
             try
             {
+                //Checking for errors and contraints
+                if (prices.Length < 1 || prices.Length > 105) { throw new ArgumentOutOfRangeException("Length of list is not in range per constraints"); }
+                for (int i = 0; i < prices.Length - 1; i++)
+                { if (prices[i] < 0 || prices[i] > 104) { throw new Exception("List input is not in order"); } }
+
+                //Solution
                 int profit;
                 int max_profit = 0;
 
@@ -292,6 +302,7 @@ namespace ISM6225_Fall_2023_Assignment_2
         {
             try
             {
+                //Solution
                 char[] stros = { '0', '1', '6', '8', '9' };
                 char[] nums = s.ToCharArray();
                 Boolean result = true;
@@ -300,10 +311,7 @@ namespace ISM6225_Fall_2023_Assignment_2
                 {
                     if (stros.Contains(num))
                     {
-
-                        Debug.WriteLine(num);
                         result = true;
-                        Debug.WriteLine(result);
                     }
                     else { result = false;  }
                 }
@@ -417,8 +425,6 @@ namespace ISM6225_Fall_2023_Assignment_2
 
                 int result = new int();
 
-                foreach(int num in nums) { Debug.WriteLine(num); }
-
                 if (nums.Length >= 3) {result = nums[2];}
                 else { result = nums[0]; }
                 return result;
@@ -455,7 +461,6 @@ namespace ISM6225_Fall_2023_Assignment_2
             {
                 List<string> moves = new List<string>() { };
                 string move = "";
-                Debug.WriteLine(currentState.Substring(0, 2));
 
                 for (int i = 0; i < currentState.Length - 1; i++)
                 {
